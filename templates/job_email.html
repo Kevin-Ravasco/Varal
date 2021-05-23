@@ -1,0 +1,10 @@
+{% autoescape off %}
+
+Hi {{ user.get_full_name }},
+Thank you for applying for a job on our platform, below are the details of the task:
+
+{{ job.name }}
+
+
+http://{{ domain }}
+{% endautoescape %}

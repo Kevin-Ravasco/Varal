@@ -1,0 +1,68 @@
+{% extends 'src/auth_base.html' %}
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+    <!-- Register Section Begin -->
+    <div class="register-login-section spad">
+        <div class="container">
+            {% include 'account/errors.html' %}
+
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 card">
+                    {% include 'account/socialaccount/snippets/provider_list.html' with process="login" %}
+                    <div class="card-body mt-3">
+                        <form method="post" c>
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="group-input">
+                                        <label>First Name *</label>
+                                        {{ form.first_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="group-input">
+                                        <label>Last Name *</label>
+                                        {{ form.last_name }}
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mb-3">
+                                    <div class="group-input">
+                                        <label>Email address *</label>
+                                        {{ form.email }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="group-input">
+                                        <label>Password *</label>
+                                        {{ form.password }}
+                                    </div>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <div class="group-input">
+                                        <label>Confirm Password *</label>
+                                        {{ form.password2 }}
+                                    </div>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-dark w-100 mt-3 p-2" id="phone-btn">Sign Up</button>
+                        </form>
+                        <div class="text-center mt-3 pb-5">
+                            <a href="{% url 'account_login' %}" class="or-login">Or Login</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Form Section End -->
+
+{% endblock content %}
+
+{% block scripts %}
+<script src="{% static 'js/phone-validator.js' %}"></script>
+{% endblock scripts %}
