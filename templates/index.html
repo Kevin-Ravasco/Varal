@@ -1,0 +1,63 @@
+{% extends 'src/base.html' %}
+{% block content %}
+{% load static %}
+
+<h1 class="h3 mb-3">Jobs</h1>
+
+<div class="row">
+	{% for job in page_obj %}
+	<div class="col-12 col-md-6 col-lg-4">
+		<div class="card">
+			<div class="card-header">
+				<h5 class="card-title mb-0"><strong>{{ job.name }}</strong></h5>
+			</div>
+			<div class="card-body">
+				<p class="card-text">Some description of the task provided to help handle the task</p>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#jobModal-{{ job.id }}">
+				  Apply
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<!-- confirmation modal -->
+	<div class="modal fade" id="jobModal-{{ job.id }}" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+		<div class="modal-dialog" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title">Confirm application</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">×</span>
+					</button>
+				</div>
+				<div class="modal-body m-3">
+					<p class="mb-0">Are you sure you want to apply for this job?</p>
+					<h5><strong>Job: {{ job.name }}</strong></h5>
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+					<form method="post">
+						{% csrf_token %}
+						<input type="hidden" name="job_id" value="{{ job.id }}">
+						<button type="submit" class="btn btn-primary">Apply</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- end confirmation modal -->
+	{% empty %}
+	<div class="col-md-12 text-center">
+		<div class="card">
+			<div class="card-body">
+				<h5 class="p-5">No jobs available at the moment</h5>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+
+</div>
+
+{% include 'src/pagination.html' %}
+
+{% endblock content %}

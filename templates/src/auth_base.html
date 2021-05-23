@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+{% load static %}
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+	<title>Varal Job Portal</title>
+
+	<link href="{% static 'css/app.css' %}" rel="stylesheet">
+	<link href="{% static 'css/auth.css' %}" rel="stylesheet">
+</head>
+
+<body>
+        <main class="content">
+            <div class="container-fluid p-0">
+
+                {% block content %}
+
+                <!-- site content goes here -->
+
+                {% endblock content %}
+
+            </div>
+        </main>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+{% for field in form %}
+    {% for error in field.errors %}
+        <div class="alert alert-warning alert-with-icon">
+          <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+            <i class="tim-icons icon-simple-remove"></i>
+          </button>
+          <span data-notify="icon" class="tim-icons icon-alert-circle-exc"></span>
+          <span data-notify="message">{{ field.label }} : {{ error }}</span>
+        </div>
+    {% endfor %}
+{% endfor %}
+
+
+{% for error in form.non_field_errors %}
+    <div class="alert alert-warning alert-with-icon">
+      <button type="button" aria-hidden="true" class="close" data-dismiss="alert" aria-label="Close">
+        <i class="tim-icons icon-simple-remove"></i>
+      </button>
+      <span data-notify="icon" class="tim-icons icon-alert-circle-exc"></span>
+      <span data-notify="message">{{ error }}</span>
+    </div>
+{% endfor %}

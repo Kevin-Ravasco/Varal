@@ -1,0 +1,126 @@
+{% extends 'src/base.html' %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% load i18n %}
+
+{% block head_title %}{% trans "E-mail Addresses" %}{% endblock %}
+
+{% block content %}
+
+<div class="container">
+    <div class="row my-5">
+        <div class="col-md-12 container">
+            {% include 'account/messages.html' %}
+            <div class="card text-center px-3">
+                <div class="py-5">
+                    <h4>{% trans "E-mail Addresses" %}</h4>
+                    {% if user.emailaddress_set.all %}
+                    <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
+
+                    <form action="{% url 'account_email' %}" class="email_list" method="post">
+                    {% csrf_token %}
+                        <div class="table-responsive">
+                            <table class="table text-center">
+                                <thead class="text-uppercase bg-dark">
+                                    <tr class="text-white">
+                                        <th scope="col">Select</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for emailaddress in user.emailaddress_set.all %}
+                                    <tr>
+                                        <th scope="row">
+                                            <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+                                        </th>
+                                        <td>
+                                            {{ emailaddress.email }}
+                                        </td>
+                                        <td>
+                                            {% if emailaddress.verified %}
+                                              <span class="badge badge-success"><i class="fa fa-check"> </i> {% trans "Verified" %}</span>
+                                            {% else %}
+                                              <span class="badge badge-danger">{% trans "Unverified" %}</span>
+                                            {% endif %}
+
+                                            {% if emailaddress.primary %}
+                                              <span class="badge badge-primary">{% trans "Primary" %}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if not emailaddress.primary %}
+                                              <button class="btn btn-sm btn-success" type="submit" name="action_primary" >
+                                                  {% trans 'Make Primary' %}
+                                              </button>
+                                            {% endif %}
+                                            {% if not emailaddress.verified %}
+                                              <button class="btn btn-sm btn-primary" type="submit" name="action_send" >
+                                                  {% trans 'Re-send Verification' %}
+                                              </button>
+                                            {% endif %}
+                                            <button type="button" class="btn btn-flat btn-danger btn-sm" data-toggle="modal" data-target=".bd-example-modal-sm">
+                                                <i class="fa fa-trash"> </i> {% trans 'Remove Email' %}
+                                            </button>
+                                        </td>
+                                    </tr>
+
+                                    <div class="modal fade bd-example-modal-sm" aria-hidden="true" style="display: none;">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Confirm Remove</h5>
+                                                    <button type="button" class="close" data-dismiss="modal"><span>×</span></button>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <p>Are you sure you want to remove this email address from your account?</p>
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-sm btn-info" data-dismiss="modal">Close</button>
+                                                    <button class="btn btn-danger btn-sm" type="submit" name="action_remove" >
+                                                        <i class="fa fa-trash"> </i> {% trans 'Remove' %}
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                    </form>
+
+                    {% else %}
+                    <p>
+                        <strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up.
+                        You should really add an e-mail address so you can receive notifications, reset your password, etc." %}
+                    </p>
+
+                    {% endif %}
+
+                      {% if can_add_email %}
+
+                        <h5 class="mb-2 mt-4">{% trans "Add E-mail Address" %}</h5>
+                        <form method="post" action="{% url 'account_email' %}" class="add_email">
+                            {% csrf_token %}
+                            <div class="row">
+                                <div class="col-md-12 form-group px-4">
+                                    {{ form.email|add_class:"form-control" }}
+                                </div>
+                            </div>
+                            <button class="btn btn-primary btn-sm" name="action_add" type="submit">{% trans "Add E-mail" %}</button>
+                        </form>
+
+                      {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

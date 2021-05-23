@@ -1,0 +1,23 @@
+{% extends 'src/base.html' %}
+{% block content %}
+{% load static %}
+
+<h1 class="h3 mb-3">Jobs</h1>
+
+<div class="row">
+	<div class="col-md-12 text-center">
+		<div class="card">
+			<div class="card-body p-5">
+				<h5>Job/Task successfully applied</h5>
+				<p>
+					Please check your email for the details concerning the job and the
+					necessary files required to be handled or to help you handle the
+					task.
+				</p>
+				<a href="{% url 'home' %}" class="btn btn-primary w-50">Back to jobs</a>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock content %}

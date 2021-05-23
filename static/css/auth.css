@@ -1,0 +1,11 @@
+.google-btn {
+    background-color: #ff3442;
+    padding: 6px 14px;
+    border-radius: 30px;
+    color: white;
+    font-weight: 700;
+}
+
+.w-40 {
+    width: 40%;
+}

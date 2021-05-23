@@ -1,0 +1,50 @@
+ {% extends 'src/auth_base.html' %}
+{% block content %}
+{% load static %}
+{% load widget_tweaks %}
+
+{% load account socialaccount %}
+{% get_providers as socialaccount_providers %}
+
+    <!-- Register Section Begin -->
+    <div>
+        <div class="container">
+            {% include 'account/errors.html' %}
+
+            <div class="row">
+                <div class="col-lg-6 offset-lg-3 card">
+                    <div class="card-body">
+                        {% include 'account/socialaccount/snippets/provider_list.html' with process="login" %}
+                        <form method="post">
+                            {% csrf_token %}
+                            <div class="group-input mb-3">
+                                <label>Email address *</label>
+                                {{ form.login|add_class:"form-control" }}
+                            </div>
+                            <div class="group-input mb-3">
+                                <label>Password *</label>
+                                {{ form.password|add_class:"form-control" }}
+                            </div>
+                            <div class="group-input mb-3">
+                                <div class="gi-more">
+                                    <label>
+                                        Remember me
+                                        {{ form.remember }}
+                                        <span class="checkmark"></span>
+                                    </label>
+                                    <a href="{% url 'account_reset_password' %}" class="forget-pass float-right">Forgot Password?</a>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-outline btn-dark w-100 mt-3 p-2">Sign In</button>
+                        </form>
+                        <div class="my-4 text-center">
+                            <a href="{% url 'account_signup' %}">Create An Account</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Register Form Section End -->
+
+{% endblock content %}

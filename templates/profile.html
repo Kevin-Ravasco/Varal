@@ -1,0 +1,110 @@
+{% extends 'src/base.html' %}
+{% block content %}
+{% load static %}
+
+<h1 class="h3 mb-3">Profile</h1>
+
+<div class="row">
+	<div class="col-md-4 col-xl-3">
+		<div class="card mb-3">
+			<div class="card-header">
+				<h5 class="card-title mb-0">Profile Details</h5>
+			</div>
+			<div class="card-body text-center">
+				<img src="{% static 'img/avatars/default_user.png' %}" alt="Christina Mason" class="img-fluid rounded-circle mb-2" width="128" height="128" />
+				<h5 class="card-title mb-0">{{ request.user.get_full_name }}</h5>
+				<div class="text-muted mb-2">Lead Developer</div>
+
+				<div>
+					<a class="btn btn-primary btn-sm" href="#">Follow</a>
+					<a class="btn btn-primary btn-sm" href="#"><span data-feather="message-square"></span> Message</a>
+				</div>
+			</div>
+			<hr class="my-0" />
+			<div class="card-body">
+				<h5 class="h6 card-title">Skills</h5>
+				<a href="#" class="badge badge-primary mr-1 my-1">HTML</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">JavaScript</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">Sass</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">React</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">Redux</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">UI</a>
+				<a href="#" class="badge badge-primary mr-1 my-1">UX</a>
+			</div>
+			<hr class="my-0" />
+			<div class="card-body">
+				<h5 class="h6 card-title">About</h5>
+				<ul class="list-unstyled mb-0">
+					<li class="mb-1"><span data-feather="home" class="feather-sm mr-1"></span> Lives in <a href="#">Nairobi, KE</a></li>
+
+					<li class="mb-1"><span data-feather="briefcase" class="feather-sm mr-1"></span> Works at <a href="#">GitHub</a></li>
+					<li class="mb-1"><span data-feather="map-pin" class="feather-sm mr-1"></span> From <a href="#">Boston</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-8 col-xl-9 pb-5">
+		<div class="card">
+			<div class="card-header">
+
+				<h5 class="card-title mb-0">Activities</h5>
+			</div>
+			<div class="card-body h-100">
+				{% for allocation in page_obj %}
+				<div class="media">
+					<img src="{% static 'img/avatars/default_user.png' %}" width="36" height="36" class="rounded-circle mr-2" alt="Vanessa Tucker">
+					<div class="media-body">
+						<small class="float-right text-navy">{{ allocation.time_allocated }}</small>
+						You applied and you were allocated a job: <strong>{{ allocation.job.name }}</strong><br />
+						{% if allocation.time_completed %}
+						<small class="text-muted">Submited: {{ allocation.time_completed }}</small><br />
+						{% else %}
+						<button type="button" class="btn btn-primary mt-1" data-toggle="modal" data-target="#jobModal-{{ allocation.id }}">
+							Submit
+						</button>
+						{% endif %}
+					</div>
+				</div>
+
+				<hr />
+
+				<!-- confirmation modal -->
+				<div class="modal fade" id="jobModal-{{ allocation.id }}" tabindex="-1" role="dialog" aria-hidden="true" style="display: none;">
+					<div class="modal-dialog" role="document">
+						<div class="modal-content">
+							<div class="modal-header">
+								<h5 class="modal-title">Confirm submit</h5>
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+									<span aria-hidden="true">×</span>
+								</button>
+							</div>
+							<div class="modal-body m-3">
+								<p class="mb-0">Submit job?</p>
+								<h5><strong>Job: {{ allocation.job.name }}</strong></h5>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+								<form method="post">
+									{% csrf_token %}
+									<input type="hidden" name="allocation_id" value="{{ allocation.id }}">
+									<input type="hidden" name="job_id" value="{{ allocation.job.id }}">
+									<button type="submit" class="btn btn-primary">Finalize Submit</button>
+								</form>
+							</div>
+						</div>
+					</div>
+				</div>
+				<!-- end confirmation modal -->
+				{% empty %}
+				<div class="p-4 text-center">
+					<h5>No job activity yet</h5>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		{% include 'src/pagination.html' %}
+	</div>
+</div>
+{% endblock content %}
