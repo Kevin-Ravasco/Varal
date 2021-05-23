@@ -2,7 +2,7 @@
 This is the project for the Varal software trainee interview.
 
 #### Running the project.
-1. Create a postgress database.
+1. Create a postgres database.
 2. Connect the postgres database to the django project.
 3. Run python manage.py migrate
 4. Create superuser to access admin page using python manage.py createsuperuser.
